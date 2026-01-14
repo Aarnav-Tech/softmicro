@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Microsoft Store Downloader
 
-## Getting Started
+A clean, unofficial Microsoft Store downloader that lets you fetch official app packages directly from Microsoft servers — without using the Microsoft Store app.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Extracts **official download links** for Microsoft Store apps  
+- Supports **MSIX / APPX / bundle** packages  
+- Groups files by **architecture** (x64 / arm64 / x86 / neutral)  
+- Displays **file sizes** (when available)  
+- Hides advanced files (blockmaps, metadata) behind a toggle  
+- Clean, minimal **light / dark mode UI**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧠 How it works
 
-## Learn More
+1. You paste a Microsoft Store app URL  
+2. The app extracts the **Product ID**  
+3. It queries Microsoft’s backend endpoints  
+4. Downloadable package links are parsed and displayed  
 
-To learn more about Next.js, take a look at the following resources:
+All downloads happen **directly from Microsoft servers**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠 Tech Stack
 
-## Deploy on Vercel
+- **Next.js** (App Router)
+- **React**
+- **Tailwind CSS**
+- Server-side API routes (Node.js)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ⚠️ Disclaimer
+
+This project is **unofficial** and is **not affiliated with Microsoft**.
+
+- No files are hosted by this project  
+- All downloads come directly from Microsoft-owned domains  
+- This tool is provided for **educational and convenience purposes only**
+
+---
+
+## 📌 Notes
+
+- File sizes may take a moment to load  
+- Some files may not report size due to CDN limitations  
+- Advanced files are hidden by default to avoid clutter  
+
+---
+
+## 📄 License
+
+MIT
