@@ -41,7 +41,8 @@ This project is **unofficial** and is **not affiliated with Microsoft**.
 
 - No files are hosted by this project  
 - All downloads come directly from Microsoft-owned domains  
-- This tool is provided for **educational and convenience purposes only**
+- This tool is provided for **convenience purposes only**
+- Alternative for https://store.rg-adguard.net/
 
 ---
 
