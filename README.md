@@ -11,7 +11,7 @@ A clean, unofficial Microsoft Store downloader that lets you fetch official app 
 - Groups files by **architecture** (x64 / arm64 / x86 / neutral)  
 - Displays **file sizes** (when available)  
 - Hides advanced files (blockmaps, metadata) behind a toggle  
-- Clean, minimal **light / dark mode UI**
+- Clean, minimal **light / dark mode UI** _(broken rn)_
 
 ---
 
