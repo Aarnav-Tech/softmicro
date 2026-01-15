@@ -135,7 +135,7 @@ export default function Home() {
           className="absolute top-0 right-0 px-3 py-1.5 rounded-md
                      text-sm font-medium
                      bg-slate-200 text-slate-900
-                     dark:bg-slate-800 dark:text-slate-100"
+                     dark:bg-slate-800 dark:text-slate-100 cursor-pointer"
         >
           {dark ? "Light mode" : "Dark mode"}
         </button>
@@ -163,7 +163,7 @@ export default function Home() {
             onClick={handleSubmit}
             disabled={loading}
             className="px-4 rounded-lg bg-sky-500 text-black font-semibold
-                       hover:bg-sky-400 disabled:opacity-50"
+                       hover:bg-sky-400 disabled:opacity-50 cursor-pointer"
           >
             {loading ? "Loading…" : "Fetch"}
           </button>
