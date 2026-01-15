@@ -1,28 +1,30 @@
 # Microsoft Store Downloader
 
-A clean, unofficial Microsoft Store downloader that lets you fetch official app packages directly from Microsoft servers — without using the Microsoft Store app.
+A clean, unofficial Microsoft Store downloader that lets you fetch **official app packages directly from Microsoft servers** — without using the Microsoft Store app.
 
 ---
 
 ## ✨ Features
 
-- Extracts **official download links** for Microsoft Store apps  
-- Supports **MSIX / APPX / bundle** packages  
-- Groups files by **architecture** (x64 / arm64 / x86 / neutral)  
-- Displays **file sizes** (when available)  
-- Hides advanced files (blockmaps, metadata) behind a toggle  
-- Clean, minimal **light / dark mode UI** _(broken rn)_
+- Paste **any Microsoft Store link or Product ID**
+- Extracts **official download links** from Microsoft
+- Supports **MSIX / APPX / bundle** packages
+- Groups files by **architecture** (x64 / arm64 / x86 / neutral)
+- Displays **file sizes** (when available)
+- Hides advanced files (blockmaps, metadata) behind a toggle
+- **Shareable result URLs** (`?id=PRODUCTID`)
+- Clean, minimal **light / dark UI** _(theme toggle WIP)_
 
 ---
 
 ## 🧠 How it works
 
-1. You paste a Microsoft Store app URL  
+1. You paste a Microsoft Store app link or Product ID  
 2. The app extracts the **Product ID**  
-3. It queries Microsoft’s backend endpoints  
+3. It queries Microsoft’s delivery endpoints  
 4. Downloadable package links are parsed and displayed  
 
-All downloads happen **directly from Microsoft servers**.
+All downloads happen **directly from Microsoft servers** — no files are proxied or hosted.
 
 ---
 
@@ -35,22 +37,36 @@ All downloads happen **directly from Microsoft servers**.
 
 ---
 
-## ⚠️ Disclaimer
+## 🔗 Supported Inputs
 
-This project is **unofficial** and is **not affiliated with Microsoft**.
+Examples of valid input:
 
-- No files are hosted by this project  
-- All downloads come directly from Microsoft-owned domains  
-- This tool is provided for **convenience purposes only**
-- Alternative for https://store.rg-adguard.net/
+- `https://apps.microsoft.com/detail/9NBLGGH4NNS1`
+- `https://apps.microsoft.com/store/detail/spotify/9NBLGGH4NNS1`
+- `https://www.microsoft.com/store/productId/9NBLGGH4NNS1`
+- `9NBLGGH4NNS1` (Product ID only)
 
 ---
 
-## 📌 Notes
+## ⚠️ Disclaimer
 
-- File sizes may take a moment to load  
-- Some files may not report size due to CDN limitations  
-- Advanced files are hidden by default to avoid clutter  
+This project is **unofficial** and **not affiliated with Microsoft**.
+
+- No files are hosted by this project
+- All downloads come directly from Microsoft-owned domains
+- Some Microsoft Store apps **do not expose downloadable installers**
+- This tool is provided for **convenience and educational purposes**
+
+Inspired by / alternative to: https://store.rg-adguard.net/
+
+---
+
+## 📌 Notes & Limitations
+
+- File sizes may take a moment to load
+- Some files may not report size due to CDN limitations
+- Not all Store apps provide downloadable packages
+- Advanced files are hidden by default to avoid clutter
 
 ---
 
