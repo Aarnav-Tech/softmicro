@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 /* ---------- Types ---------- */
 
@@ -21,7 +22,7 @@ function groupByArch(files: StoreFile[]) {
     x64: files.filter(f => f.arch === "x64"),
     arm64: files.filter(f => f.arch === "arm64"),
     x86: files.filter(f => f.arch === "x86"),
-    neutral: files.filter(f => f.arch === "neutral")
+    neutral: files.filter(f => f.arch === "neutral"),
   };
 }
 
@@ -35,6 +36,10 @@ function formatSize(bytes?: number | null) {
 /* ---------- Page ---------- */
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const [toast, setToast] = useState<string | null>(null);
+
+
   const [url, setUrl] = useState("");
   const [files, setFiles] = useState<StoreFile[]>([]);
   const [loading, setLoading] = useState(false);
@@ -49,9 +54,15 @@ export default function Home() {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
 
-  /* ---------- Fetch flow ---------- */
+  /* ---------- Core fetch logic (reusable) ---------- */
 
-  async function handleSubmit() {
+  function showToast(message: string) {
+  setToast(message);
+  setTimeout(() => setToast(null), 2000);
+  }
+
+
+  async function fetchWithInput(input: string) {
     setLoading(true);
     setError(null);
     setFiles([]);
@@ -62,23 +73,37 @@ export default function Home() {
       const extractRes = await fetch("/api/extract", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url })
+        body: JSON.stringify({ url: input }),
       });
 
       const extractData = await extractRes.json();
       if (!extractRes.ok) {
-        setError(extractData.error || "Invalid Microsoft Store URL");
+        setError(extractData.error || "Invalid Microsoft Store link or ID");
         return;
       }
+
+      const productId = extractData.productId;
+
+      // 🔗 Update URL to be shareable
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.set("id", productId);
+      window.history.replaceState({}, "", newUrl.toString());
 
       // 2️⃣ Fetch store files
       const storeRes = await fetch("/api/store", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId: extractData.productId })
+        body: JSON.stringify({ productId }),
       });
 
       const storeData = await storeRes.json();
+
+      if (!storeData.files || storeData.files.length === 0) {
+        setError(
+          "No downloadable installers found for this app. Some Microsoft Store apps only work via the Store."
+        );
+      }
+
       setFiles(storeData.files ?? []);
     } catch {
       setError("Unexpected error");
@@ -86,6 +111,29 @@ export default function Home() {
       setLoading(false);
     }
   }
+
+  /* ---------- Button handler ---------- */
+
+  async function handleSubmit() {
+    if (!url.trim()) {
+      setError("Please paste a Microsoft Store link or Product ID");
+      return;
+    }
+
+    await fetchWithInput(url);
+  }
+
+  /* ---------- Auto-load from shared URL ---------- */
+
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) {
+      setUrl(id);
+      fetchWithInput(id);
+    }
+    // run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /* ---------- Filtering ---------- */
 
@@ -108,15 +156,15 @@ export default function Home() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        urls: primaryFiles.map(f => f.url)
-      })
+        urls: primaryFiles.map(f => f.url),
+      }),
     })
       .then(res => res.json())
       .then((sizes) => {
         setFiles(prev =>
           prev.map(f => ({
             ...f,
-            size: sizes[f.url] ?? f.size
+            size: sizes[f.url] ?? f.size,
           }))
         );
       })
@@ -148,11 +196,24 @@ export default function Home() {
           Download official Microsoft Store packages without the Store app
         </p>
 
+        {/* Share link button */}
+        {files.length > 0 && (
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              showToast("Link Copied. 📋");
+            }}
+            className="text-sm text-sky-500 hover:underline mb-3 cursor-pointer"
+          >
+            🔗 Copy shareable link
+          </button>
+        )}
+
         <div className="flex gap-2">
           <input
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://apps.microsoft.com/detail/..."
+            placeholder="Paste Microsoft Store link or Product ID"
             className="flex-1 p-3 rounded-lg
                        bg-white dark:bg-slate-800
                        border border-slate-300 dark:border-slate-700
@@ -203,7 +264,7 @@ export default function Home() {
           <section className="mt-6">
             <button
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="text-sky-500 hover:underline text-sm"
+              className="text-sky-500 hover:underline text-sm cursor-pointer"
             >
               {showAdvanced
                 ? "Hide advanced files"
@@ -220,6 +281,22 @@ export default function Home() {
           </section>
         )}
       </div>
+      {toast && (
+  <div
+    className="
+      fixed bottom-6 left-1/2 -translate-x-1/2
+      bg-slate-900 text-white
+      dark:bg-slate-100 dark:text-black
+      px-4 py-2 rounded-lg
+      text-sm font-medium
+      shadow-lg
+      animate-fade-in
+    "
+  >
+    {toast}
+  </div>
+)}
+
     </main>
   );
 }
