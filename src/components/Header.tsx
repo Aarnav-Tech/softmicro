@@ -32,7 +32,7 @@ export default function Header() {
           <NavLink href="/">Search</NavLink>
           <NavLink href="/#how-it-works">How it works</NavLink>
           <a
-            href="https://github.com"
+            href="https://github.com/Aarnav-Tech/softmicro"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-400 hover:text-slate-200 rounded-md hover:bg-surface-hover transition-colors"
